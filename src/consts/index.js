@@ -1,7 +1,7 @@
-import strings from './strings'
-import stories from './stories'
+import strings from './strings';
+import actionNames from './actionNames';
 
 export default {
-  stories,
+  actionNames,
   strings,
-}
+};
