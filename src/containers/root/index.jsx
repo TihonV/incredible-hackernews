@@ -1,18 +1,49 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
-import store from '../../store';
-
+import Page from '../layout/page';
 
 const App = () => (
-  <Provider {...{ store }}>
-    <BrowserRouter>
-      <p>
-          Have a lot of fun!
-      </p>
-    </BrowserRouter>
-  </Provider>
+  <BrowserRouter>
+    <Switch>
+      <Route
+        exact
+        path="/"
+        component={
+          () => <Redirect to="/topstories" />
+        }
+      />
+      <Route
+        exact
+        path="/topstories"
+        component={Page}
+      />
+      <Route
+        exact
+        path="/beststories"
+        component={Page}
+      />
+      <Route
+        path="/beststories/:id"
+        component={Page}
+      />
+      <Route
+        exact
+        path="/newstories"
+        component={Page}
+      />
+      <Route
+        exact
+        path="/askstories"
+        component={Page}
+      />
+    </Switch>
+  </BrowserRouter>
 );
 
 export default App;

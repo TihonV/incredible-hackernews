@@ -1,5 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const NewsPage = () => (<h2>Page for list of news</h2>);
+const Stories = ({ story }) => {
+  switch (story) {
+  case 'new':
+    return (<div>New Stories</div>);
+  case 'top':
+    return (<div>Top Stories</div>);
+  default: // 'best'
+    return (<div>Best Stories</div>);
+  }
+};
 
-export default NewsPage;
+Stories.propTypes = {
+  story: PropTypes.oneOf(['new', 'best', 'top']),
+};
+
+Stories.defaultProps = {
+  story: 'best',
+};
+
+export default Stories;
