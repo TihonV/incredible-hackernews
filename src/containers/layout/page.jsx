@@ -1,7 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import api from '../../api';
+import { connect } from 'react-redux';
+import { List, Map } from 'immutable';
+
+import MenuBar from './menubar';
+import { getStoriesIndex } from '../../api';
+import a from '../../actions';
 
 class Page extends Component {
   constructor(props) {
@@ -9,7 +14,7 @@ class Page extends Component {
 
     this.state = {
       page: 0,
-      content: {},
+      height: 10,
     };
   }
 
@@ -20,38 +25,62 @@ class Page extends Component {
      * @desc Promise for parsing response
      * @property {Promise} value
      */
-    let resp;
+    const resp = [
+      '/newstories',
+      '/beststories',
+      '/askstories',
+      '/jobstories',
+      '/topstories',
+      '/showstories',
+    ].includes(path) ? getStoriesIndex(path) : getStoriesIndex('/topstories');
 
-    switch (path) {
-    case '/newstories':
-      resp = api.updateNewStories().next();
-      break;
-    case '/beststories':
-      resp = api.updateBestStories().next();
-      break;
-    case '/askstories':
-      resp = api.updateAskStories().next();
-      break;
-    case '/showstories':
-      resp = api.updateShowStories().next();
-      break;
-    case '/jobstories':
-      resp = api.updateJobStories().next();
-      break;
-    default: // 'topstories'
-      resp = api.updateTopStories().next();
-    }
+    /**
+     * @func
+     * @desc writing posts into store
+     * @param {array} data
+     */
+    const writePosts = (data) => {
+      this.props.loadList(List(data).reduce(
+        (list, value) => list.set(value, new Map()),
+        new Map(),
+      ));
+    };
 
-    resp.value.then((data) => { this.setState({ posts: data }); });
+    // TODO: Make generator for trying when network error
+
+    resp.then(writePosts).catch((e) => { console.log('Error when updating: ', e); });
   }
 
   render() {
-    return (<div>Page with posts</div>);
+    const { items } = this.props;
+    return (
+      <Fragment>
+        <MenuBar />
+        <main>Content</main>
+      </Fragment>
+    );
   }
 }
 
 Page.propTypes = {
-  match: PropTypes.object,
+  /* eslint-disable react/require-default-props */
+  // From react-router-dom
+  match: PropTypes.objectOf(PropTypes.string),
+
+  // From redux store
+  items: PropTypes.instanceOf(Map),
+  dispatch: PropTypes.func,
+
+  // From dispatch
+  loadList: PropTypes.func,
+  loadPost: PropTypes.func,
+  /* eslint-enable react/require-default-props */
 };
 
-export default Page;
+const mapStateToProps = state => ({ items: state.get('items', new Map()) });
+const mapDispatchToProps = dispatch => ({
+  loadList: list => dispatch(a.loadList(list)),
+  loadPost: _id => dispatch(a.loadPost(_id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);
