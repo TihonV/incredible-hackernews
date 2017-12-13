@@ -2,9 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { List, Map } from 'immutable';
+import { List, OrderedMap } from 'immutable';
 
 import MenuBar from './menubar';
+import Shortcut from './shortcut';
 import { getStoriesIndex } from '../../api';
 import a from '../../actions';
 
@@ -14,7 +15,7 @@ class Page extends Component {
 
     this.state = {
       page: 0,
-      height: 10,
+      height: 20,
     };
   }
 
@@ -41,8 +42,8 @@ class Page extends Component {
      */
     const writePosts = (data) => {
       this.props.loadList(List(data).reduce(
-        (list, value) => list.set(value, new Map()),
-        new Map(),
+        (list, value) => list.setIn([path, value], new OrderedMap()),
+        this.props.items.get(path, new OrderedMap()),
       ));
     };
 
@@ -52,11 +53,47 @@ class Page extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, match, loadPost } = this.props;
+    const { page, height } = this.state;
+    /**
+     * @type {OrderedMap}
+     */
+    const visibleItems = items
+      .getIn(['list', match.path], new OrderedMap())
+      .slice(page * height, (page + 1) * height).keySeq();
+    const mainStyle = {
+      width: '70%',
+      margin: '1em auto',
+      minHeight: 'calc(100vh - 7em)',
+    };
+    const footerStyle = {
+      width: '70%',
+      margin: '0 auto',
+      height: '2em',
+    };
+
     return (
       <Fragment>
         <MenuBar />
-        <main>Content</main>
+        <main style={mainStyle}>
+          {
+            /* eslint-disable react/no-array-index-key */
+            items.getIn(['list', match.path], new OrderedMap()).count() !== 0 ?
+              visibleItems.map((k, i) => (<Shortcut
+                key={k}
+                number={i + 1 + (page * height)}
+                postId={k}
+                item={items.getIn(['list', match.path, k], new OrderedMap())}
+                loadPost={loadPost}
+                path={match.path}
+              />)) :
+              (<section>Loading...</section>)
+            /* eslint-enable react/no-array-index-key */
+          }
+        </main>
+        <footer style={footerStyle}>
+          Footer
+        </footer>
       </Fragment>
     );
   }
@@ -65,10 +102,10 @@ class Page extends Component {
 Page.propTypes = {
   /* eslint-disable react/require-default-props */
   // From react-router-dom
-  match: PropTypes.objectOf(PropTypes.string),
+  match: PropTypes.object,
 
   // From redux store
-  items: PropTypes.instanceOf(Map),
+  items: PropTypes.object,
   dispatch: PropTypes.func,
 
   // From dispatch

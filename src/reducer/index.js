@@ -5,16 +5,19 @@ const initialState = new Map();
 /**
  * @func
  * @desc Reducer for loading items
- * @param {Map} state
+ * @param {Map|OrderedMap} state
  * @param {string} type
  * @param {Map} payload
  */
 const rootReducer = (state = initialState, { type, payload }) => {
   switch (type) {
   case 'LOAD_LIST':
-    return state.set('list', payload);
+    return state.setIn(
+      ['list', payload.keySeq().first()],
+      payload.get(payload.keySeq().first()).reverse(),
+    );
   case 'LOAD_POST':
-    return state.setIn(['list', payload.get('id')], payload);
+    return state.setIn(['list', payload.get('path'), payload.get('id')], payload.remove('path'));
   default:
     return state;
   }

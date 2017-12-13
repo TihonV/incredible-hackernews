@@ -5,9 +5,9 @@ import logoSvg from './logo.svg';
 
 const headerStyle = {
   height: '3em',
-  width: 'calc(100% - 8em)',
+  width: 'calc(100% - 30%)',
   display: 'flex',
-  padding: '0 4em',
+  padding: '0 15%',
   background: '#f60',
   alignContent: 'stretch',
 };
