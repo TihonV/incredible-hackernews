@@ -54,6 +54,10 @@ class Page extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ page: (nextProps.match.params.id || 1) - 1 });
+  }
+
   render() {
     const { items, match, loadPost } = this.props;
     const { page, height } = this.state;
@@ -65,7 +69,7 @@ class Page extends Component {
       .slice(page * height, (page + 1) * height).keySeq();
     const mainStyle = {
       width: '70%',
-      margin: '1em auto',
+      margin: '5em auto 1em',
       minHeight: 'calc(100vh - 7em)',
     };
     const footerStyle = {
@@ -95,8 +99,25 @@ class Page extends Component {
                 loadPost={loadPost}
                 path={match.path}
               />)) :
-              (<section style={loaderStyle}/>)
+              (<section style={loaderStyle} />)
           }
+          { (this.props.match.params.id || 1) !== 1 ? (
+            <button
+              onClick={() => this.setState({
+                page: page + 1,
+              })}
+            >
+              Prev
+            </button>
+          ) : null }
+          { (this.props.match.params.id || 1) !== page / height ? (
+            <button
+              onClick={() => this.setState({
+                page: page - 1,
+              })}
+            >
+              Next
+            </button>) : null }
         </main>
         <footer style={footerStyle}>
           <a

@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import logoSvg from './logo.svg';
 
 const headerStyle = {
+  position: 'absolute',
+  top: '0',
+  left: '0',
   height: '3em',
   width: 'calc(100% - 30%)',
   display: 'flex',

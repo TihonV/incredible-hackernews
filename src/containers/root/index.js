@@ -9,6 +9,7 @@ import {
 import { Provider } from 'react-redux';
 
 import store from '../../store';
+import { URI_PREFIX } from '../../consts';
 
 import NotFound from '../layout/404';
 import Page from '../layout/page';
@@ -19,22 +20,27 @@ const App = () => (
       <Switch>
         <Route
           exact
-          path="/"
+          path={`${URI_PREFIX}/`}
           component={
-            () => <Redirect to="/topstories" />
+            () => <Redirect to={`${URI_PREFIX}/topstories`} />
           }
         />
         {
-          ['top', 'best', 'new', 'ask', 'job', 'show'].map(k => (
+          ['top', 'best', 'new', 'ask', 'job', 'show'].map(k => [
             <Route
               key={k}
               exact
-              path={`/${k}stories`}
+              path={`${URI_PREFIX}/${k}stories`}
+              component={Page}
+            />,
+            <Route
+              key={`_${k}`}
+              path={`${URI_PREFIX}/${k}stories/:id`}
               component={Page}
             />
-          ))
+          ])
         }
-        <Route path="/" component={NotFound} />
+        <Route path={`${URI_PREFIX}/`} component={NotFound} />
       </Switch>
     </BrowserRouter>
   </Provider>

@@ -4,7 +4,7 @@ import { fromJS, Map } from 'immutable';
 import { Link } from 'react-router-dom';
 
 import 'react-virtualized/styles.css';
-import './aurek-besh-narrow.css';
+// import './aurek-besh-narrow.css';
 import './shortcut.css';
 
 import { getStory } from '../../api';
@@ -49,6 +49,7 @@ class Shortcut extends Component {
     };
 
     const footerStyle = {
+      marginTop: 'auto',
       fontSize: '.8em',
     };
 

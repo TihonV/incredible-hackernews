@@ -25,3 +25,5 @@ export default {
     showstories: 'showstories',
   },
 };
+
+export const URI_PREFIX = '';
