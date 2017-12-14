@@ -15,28 +15,28 @@ import Page from '../layout/page';
 
 const App = () => (
   <Provider store={store}>
-  <BrowserRouter>
-    <Switch>
-      <Route
-        exact
-        path="/"
-        component={
-          () => <Redirect to="/topstories" />
+    <BrowserRouter>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          component={
+            () => <Redirect to="/topstories" />
+          }
+        />
+        {
+          ['top', 'best', 'new', 'ask', 'job', 'show'].map(k => (
+            <Route
+              key={k}
+              exact
+              path={`/${k}stories`}
+              component={Page}
+            />
+          ))
         }
-      />
-      {
-        ['top', 'best', 'new', 'ask', 'job', 'show'].map(k => (
-          <Route
-            key={k}
-            exact
-            path={`/${k}stories`}
-            component={Page}
-          />
-        ))
-      }
-      <Route path="/" component={NotFound} />
-    </Switch>
-  </BrowserRouter>
+        <Route path="/" component={NotFound} />
+      </Switch>
+    </BrowserRouter>
   </Provider>
 );
 

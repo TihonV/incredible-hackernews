@@ -12,9 +12,9 @@ const initialState = new Map();
 const rootReducer = (state = initialState, { type, payload }) => {
   switch (type) {
   case 'LOAD_LIST':
-    return state.setIn(
+    return state.mergeIn(
       ['list', payload.keySeq().first()],
-      payload.get(payload.keySeq().first()).reverse(),
+      payload.get(payload.keySeq().first()),
     );
   case 'LOAD_POST':
     return state.setIn(['list', payload.get('path'), payload.get('id')], payload.remove('path'));

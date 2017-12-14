@@ -49,7 +49,9 @@ class Page extends Component {
 
     // TODO: Make generator for trying when network error
 
-    resp.then(writePosts).catch((e) => { console.log('Error when updating: ', e); });
+    if (this.props.items.get(path, OrderedMap()).count() === 0) {
+      resp.then(writePosts).catch((e) => { console.log('Error when updating: ', e); });
+    }
   }
 
   render() {
@@ -69,15 +71,21 @@ class Page extends Component {
     const footerStyle = {
       width: '70%',
       margin: '0 auto',
+      fontSize: '.8em',
       height: '2em',
+      textAlign: 'center',
     };
+    const authorLink = {
+      color: '#bbb',
+    };
+
+    const loaderStyle = {};
 
     return (
       <Fragment>
         <MenuBar />
         <main style={mainStyle}>
           {
-            /* eslint-disable react/no-array-index-key */
             items.getIn(['list', match.path], new OrderedMap()).count() !== 0 ?
               visibleItems.map((k, i) => (<Shortcut
                 key={k}
@@ -87,12 +95,16 @@ class Page extends Component {
                 loadPost={loadPost}
                 path={match.path}
               />)) :
-              (<section>Loading...</section>)
-            /* eslint-enable react/no-array-index-key */
+              (<section style={loaderStyle}/>)
           }
         </main>
         <footer style={footerStyle}>
-          Footer
+          <a
+            href="https://tihonv.github.io/"
+            style={authorLink}
+          >
+            Ivan Tyshchenko
+          </a>
         </footer>
       </Fragment>
     );

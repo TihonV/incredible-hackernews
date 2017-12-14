@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { fromJS, Map } from 'immutable';
+import { Link } from 'react-router-dom';
+
+import 'react-virtualized/styles.css';
+import './aurek-besh-narrow.css';
+import './shortcut.css';
 
 import { getStory } from '../../api';
+import Dimmer from '../../components/page/dimmer';
 
 class Shortcut extends Component {
   shouldComponentUpdate(nextProps) {
@@ -15,21 +21,27 @@ class Shortcut extends Component {
     } = this.props;
 
     const sectionStyle = {
-      borderBottom: '1px solid',
       display: 'flex',
+      borderRadius: '.1em',
       flexDirection: 'row',
-      padding: '.5em 0',
+      padding: '.8em',
+      margin: '.5em 0',
       color: '#444',
     };
 
     const asideStyle = {
       display: 'block',
       margin: 'auto .5em auto 0',
-    };
-
-    const numberStyle = {
-      maxHeigth: '2.5em',
+      minWidth: '2.5em',
+      minHeight: '2.5em',
       maxWidth: '2.5em',
+      maxHeight: '2.5em',
+      borderRadius: '50%',
+      fontSize: '1.5em',
+      color: '#fff',
+      lineHeight: '2.6em',
+      textAlign: 'center',
+      background: '#bbb',
     };
 
     const headerStyle = {
@@ -40,74 +52,21 @@ class Shortcut extends Component {
       fontSize: '.8em',
     };
 
-    const Dimmer = (
-      <section style={sectionStyle}>
-        <aside style={asideStyle}>
-          <svg
-            viewBox="0 0 120 120"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-            style={numberStyle}
-          >
-            <circle cx="60" cy="60" r="50" fill="#bbb" />
-            <text
-              x="50%"
-              y="62.5%"
-              fontSize="40"
-              textAnchor="middle"
-              stroke="#fff"
-              fill="#fff"
-              strokeWidth="1.5px"
-              lengthAdjust="spacingAndGlyphs"
-              viewBox="width"
-            >
-              { number }
-            </text>
-          </svg>
-        </aside>
-        <article>
-          <header style={headerStyle} />
-          <footer style={footerStyle} />
-        </article>
-      </section>
-    );
     const Content = (
-      <section style={sectionStyle}>
-        <aside style={asideStyle}>
-          <svg
-            viewBox="0 0 120 120"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-            style={numberStyle}
-          >
-            <circle cx="60" cy="60" r="50" fill="#bbb" />
-            <text
-              x="50%"
-              y="62.5%"
-              fontSize="40"
-              textAnchor="middle"
-              stroke="#fff"
-              fill="#fff"
-              strokeWidth="1.5px"
-              lengthAdjust="spacingAndGlyphs"
-              viewBox="width"
-            >
-              { number }
-            </text>
-          </svg>
-        </aside>
+      <section style={sectionStyle} className="card">
+        <aside style={asideStyle}>{ number }</aside>
         <article>
-          <header style={headerStyle}>{
-            item.get('url', '') === '' ? item.get('title', '') : (
-              <a href={item.get('url', '')}>{ item.get('title', '') }</a>
-            )
-          }</header>
+          <header style={headerStyle}>
+            {
+              item.get('url', '') === '' ? item.get('title', '') : (
+                <a href={item.get('url', '')}>{ item.get('title', '') }</a>
+              )
+            }
+          </header>
           <footer style={footerStyle}>
             <span>{ item.get('score', 0) } points by { item.get('by', 0) } </span>
-            <time>{ Date(item.get('time')).toString().slice(0, 21) } </time>
-            <a href="/#">comments</a>
+            <time>{ Date(item.get('time', '')).toString().slice(0, 21) } </time>
+            <Link to={`/item/${item.get('id', 'notfound')}`}>comments</Link>
           </footer>
         </article>
       </section>
