@@ -26,4 +26,4 @@ export default {
   },
 };
 
-export const URI_PREFIX = '';
+export const URI_PREFIX = 'incredible-hackernews';
