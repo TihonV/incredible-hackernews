@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { URI_PREFIX } from '../../consts';
+
 import logoSvg from './logo.svg';
 
 const headerStyle = {
@@ -48,8 +50,8 @@ const MenuBar = () => (
     <picture style={logoStyle}>
       {/* Workaround for parcel */}
       {/* Uri may starting at `/dist` */}
-      <source srcSet={`/dist/${logoSvg}`} type="image/svg+xml" />
-      <img src={`/dist/${logoSvg}`} alt="" />
+      <source srcSet={`/${URI_PREFIX}/${logoSvg}`} type="image/svg+xml" />
+      <img src={`/${URI_PREFIX}/${logoSvg}`} alt="" />
     </picture>
     <nav style={navStyle}>
       {
@@ -60,7 +62,7 @@ const MenuBar = () => (
           >
             <Link
               style={linkStyle}
-              to={`/${k}stories`}
+              to={`${URI_PREFIX}/${k}stories`}
             >
               {k}
             </Link>
