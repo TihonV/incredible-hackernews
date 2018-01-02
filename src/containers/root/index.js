@@ -40,7 +40,7 @@ const App = () => (
             />
           ])
         }
-        <Route path={`${URI_PREFIX}/`} component={NotFound} />
+        <Route path="/" component={NotFound} />
       </Switch>
     </BrowserRouter>
   </Provider>
