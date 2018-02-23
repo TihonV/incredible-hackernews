@@ -10,9 +10,6 @@ import forkImg from '../../assets/fork-light-64px.png';
 import './menubar.css';
 
 const headerStyle = {
-  position: 'fixed',
-  top: '0',
-  left: '0',
   height: '3em',
   width: 'calc(100% - 2em)',
   maxWidth: '100%',
@@ -21,7 +18,6 @@ const headerStyle = {
   justifyContent: 'space-between',
   background: '#f60',
   alignItems: 'center',
-  zIndex: '1000',
 };
 
 const logoStyle = {
@@ -66,7 +62,7 @@ const forkIconStyle = {
 };
 
 const MenuBar = () => (
-  <header style={headerStyle}>
+  <div style={headerStyle}>
     <picture style={logoStyle}>
       {/* Workaround for parcel */}
       {/* Uri may starting at `/dist` */}
@@ -94,7 +90,7 @@ const MenuBar = () => (
         <img src={forkImg} style={forkIconStyle} alt="" />
       </a>
     </nav>
-  </header>
+  </div>
 );
 
 export default MenuBar;

@@ -1,20 +1,32 @@
+import PropTypes from 'prop-types';
+
 export default {
-  blankItem: {
-    id: null,
-    deleted: null,
-    type: null,
-    by: null,
-    time: null,
-    text: null,
-    dead: null,
-    parent: null,
-    poll: null,
-    kids: null,
-    url: null,
-    score: null,
-    title: null,
-    parts: null,
-    descendants: null,
+  propTypes: {
+    item: {
+      id: PropTypes.number.isRequired,
+      deleted: PropTypes.bool,
+      type: PropTypes.oneOf(['job', 'story', 'comment', 'poll', 'pollopt']).isRequired,
+      by: PropTypes.string.isRequired,
+      time: PropTypes.number.isRequired,
+      text: PropTypes.string,
+      dead: PropTypes.bool,
+      parent: PropTypes.number,
+      poll: PropTypes.number,
+      kids: PropTypes.arrayOf(PropTypes.number),
+      url: PropTypes.string,
+      score: PropTypes.number,
+      title: PropTypes.string,
+      parts: PropTypes.arrayOf(PropTypes.number),
+      descendants: PropTypes.arrayOf(PropTypes.number),
+    },
+    users: {
+      id: PropTypes.string.isRequired,
+      delay: PropTypes.number.isRequired,
+      created: PropTypes.number.isRequired,
+      karma: PropTypes.number.isRequired,
+      about: PropTypes.string.isRequired,
+      submitted: PropTypes.arrayOf(PropTypes.number).isRequired,
+    },
   },
   urls: {
     topstories: 'topstories',

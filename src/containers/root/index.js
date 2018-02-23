@@ -1,49 +1,44 @@
-import React, { Fragment } from 'react';
-import {
-  BrowserRouter,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom';
+/** @jsx h */
 
-import { Provider } from 'react-redux';
+import { h, Component } from 'preact';
+import Router from 'preact-router';
 
-import store from '../../store';
 import { URI_PREFIX } from '../../consts';
 
+import Redirect from '../../components/Redirect';
+import MenuBar from '../../components/menubar';
 import NotFound from '../layout/404';
 import Page from '../layout/page';
+import { firebaseInit } from '../../api';
 
-const App = () => (
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route
-          exact
-          path={`${URI_PREFIX}/`}
-          component={
-            () => <Redirect to={`${URI_PREFIX}/topstories`} />
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    this.setState({ db: firebaseInit() });
+  }
+
+  render(props, { db }) {
+    // const { db } = this.state;
+    return (
+      <div>
+        <MenuBar />
+        <Router>
+          <Redirect path={URI_PREFIX} to={`${URI_PREFIX}/topstories`} />
+          {
+            ['top', 'best', 'new', 'ask', 'job', 'show'].map(k => [
+              <Page key={k} db={db} path={`${URI_PREFIX}/${k}stories`} />,
+              <Page key={`_${k}`} db={db} path={`${URI_PREFIX}/${k}stories/:id`} />,
+            ])
           }
-        />
-        {
-          ['top', 'best', 'new', 'ask', 'job', 'show'].map(k => [
-            <Route
-              key={k}
-              exact
-              path={`${URI_PREFIX}/${k}stories`}
-              component={Page}
-            />,
-            <Route
-              key={`_${k}`}
-              path={`${URI_PREFIX}/${k}stories/:id`}
-              component={Page}
-            />
-          ])
-        }
-        <Route path="/" component={NotFound} />
-      </Switch>
-    </BrowserRouter>
-  </Provider>
-);
+          <NotFound default />
+        </Router>
+      </div>
+    );
+  }
+}
 
 export default App;

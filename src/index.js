@@ -1,14 +1,16 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
-import ReactDOM from 'react-dom';
+/** @jsx h */
+
+import { h, render } from 'preact';
+import 'preact/devtools';
 import './index.css';
 import App from './containers/root';
 
-ReactDOM.render(
+render(
   <App />,
   document.getElementById('root'),
 );
 
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }

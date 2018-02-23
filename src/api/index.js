@@ -1,13 +1,15 @@
-export const HN_DATABASE_URL = 'https://hacker-news.firebaseio.com';
-export const HN_VERSION = '/v0/';
+import { firebase } from '@firebase/app';
+import '@firebase/database';
 
+const HN_VERSION = '/v0/';
+const HN_DATABASE_URL = 'https://hacker-news.firebaseio.com';
 
-export const getStoriesIndex = storyType => fetch(
-  `${HN_DATABASE_URL}${HN_VERSION}${storyType}.json`,
-  { method: 'get' },
-).then(d => d.json());
+export const config = {
+  databaseURL: HN_DATABASE_URL,
+};
 
-export const getStory = postId => fetch(
-  `${HN_DATABASE_URL}${HN_VERSION}item/${postId}.json`,
-  { method: 'get' },
-).then(d => d.json());
+export const firebaseInit = () => {
+  const app = firebase.initializeApp(config);
+  return app.database().ref(HN_VERSION);
+};
+
