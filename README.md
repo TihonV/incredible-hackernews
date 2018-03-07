@@ -1,4 +1,4 @@
 # incredible-hackernews
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+This project was created with [parcel-bundler](https://parceljs.org/).
 
